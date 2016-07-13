@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA67AB311D1E54880091DB77 /* ObjectBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = AA67AB301D1E54880091DB77 /* ObjectBinding.m */; };
 		AAA2F1081D18E41C00F4B6A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F1071D18E41C00F4B6A8 /* main.m */; };
 		AAA2F10B1D18E41C00F4B6A8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F10A1D18E41C00F4B6A8 /* AppDelegate.m */; };
 		AAA2F10E1D18E41C00F4B6A8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F10D1D18E41C00F4B6A8 /* ViewController.m */; };
 		AAA2F1111D18E41C00F4B6A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAA2F10F1D18E41C00F4B6A8 /* Main.storyboard */; };
 		AAA2F1131D18E41C00F4B6A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAA2F1121D18E41C00F4B6A8 /* Assets.xcassets */; };
 		AAA2F1161D18E41C00F4B6A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAA2F1141D18E41C00F4B6A8 /* LaunchScreen.storyboard */; };
+		AAA2F1201D18E4CF00F4B6A8 /* NSObject+BetterKVO.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F11F1D18E4CF00F4B6A8 /* NSObject+BetterKVO.m */; };
+		AAA2F1231D18E80000F4B6A8 /* KVOObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */; };
+		AAA58FBA1D1A30E400D0B538 /* TestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA58FB91D1A30E400D0B538 /* TestModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA67AB2F1D1E54600091DB77 /* ObjectBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectBinding.h; sourceTree = "<group>"; };
+		AA67AB301D1E54880091DB77 /* ObjectBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectBinding.m; sourceTree = "<group>"; };
 		AAA2F1031D18E41C00F4B6A8 /* BetterKVO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterKVO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA2F1071D18E41C00F4B6A8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AAA2F1091D18E41C00F4B6A8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +32,12 @@
 		AAA2F1121D18E41C00F4B6A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAA2F1151D18E41C00F4B6A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AAA2F1171D18E41C00F4B6A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAA2F11E1D18E4CF00F4B6A8 /* NSObject+BetterKVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BetterKVO.h"; sourceTree = "<group>"; };
+		AAA2F11F1D18E4CF00F4B6A8 /* NSObject+BetterKVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BetterKVO.m"; sourceTree = "<group>"; };
+		AAA2F1211D18E80000F4B6A8 /* KVOObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOObserver.h; sourceTree = "<group>"; };
+		AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOObserver.m; sourceTree = "<group>"; };
+		AAA58FB81D1A30E400D0B538 /* TestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModel.h; sourceTree = "<group>"; };
+		AAA58FB91D1A30E400D0B538 /* TestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +70,13 @@
 		AAA2F1051D18E41C00F4B6A8 /* BetterKVO */ = {
 			isa = PBXGroup;
 			children = (
+				AAA2F11D1D18E43500F4B6A8 /* KVO */,
 				AAA2F1091D18E41C00F4B6A8 /* AppDelegate.h */,
 				AAA2F10A1D18E41C00F4B6A8 /* AppDelegate.m */,
 				AAA2F10C1D18E41C00F4B6A8 /* ViewController.h */,
 				AAA2F10D1D18E41C00F4B6A8 /* ViewController.m */,
+				AAA58FB81D1A30E400D0B538 /* TestModel.h */,
+				AAA58FB91D1A30E400D0B538 /* TestModel.m */,
 				AAA2F10F1D18E41C00F4B6A8 /* Main.storyboard */,
 				AAA2F1121D18E41C00F4B6A8 /* Assets.xcassets */,
 				AAA2F1141D18E41C00F4B6A8 /* LaunchScreen.storyboard */,
@@ -77,6 +92,19 @@
 				AAA2F1071D18E41C00F4B6A8 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AAA2F11D1D18E43500F4B6A8 /* KVO */ = {
+			isa = PBXGroup;
+			children = (
+				AAA2F11E1D18E4CF00F4B6A8 /* NSObject+BetterKVO.h */,
+				AAA2F11F1D18E4CF00F4B6A8 /* NSObject+BetterKVO.m */,
+				AAA2F1211D18E80000F4B6A8 /* KVOObserver.h */,
+				AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */,
+				AA67AB2F1D1E54600091DB77 /* ObjectBinding.h */,
+				AA67AB301D1E54880091DB77 /* ObjectBinding.m */,
+			);
+			path = KVO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,9 +177,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAA2F1201D18E4CF00F4B6A8 /* NSObject+BetterKVO.m in Sources */,
 				AAA2F10E1D18E41C00F4B6A8 /* ViewController.m in Sources */,
 				AAA2F10B1D18E41C00F4B6A8 /* AppDelegate.m in Sources */,
 				AAA2F1081D18E41C00F4B6A8 /* main.m in Sources */,
+				AAA58FBA1D1A30E400D0B538 /* TestModel.m in Sources */,
+				AAA2F1231D18E80000F4B6A8 /* KVOObserver.m in Sources */,
+				AA67AB311D1E54880091DB77 /* ObjectBinding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +334,7 @@
 				AAA2F11C1D18E41C00F4B6A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
