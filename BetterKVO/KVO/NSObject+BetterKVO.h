@@ -10,7 +10,7 @@
 
 @interface NSObject (BetterKVO)
 
-- (void)addObserver:(NSObject *)observer forProperties:(NSArray *)keyPaths withObserveBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
+- (void)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
 - (void)removeObserver:(NSObject *)observer;
 

@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -15,11 +19,11 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EhR-V3-xYU">
-                                <rect key="frame" x="180" y="185" width="241" height="30"/>
+                                <rect key="frame" x="67" y="207.5" width="241" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="241" id="X6e-ki-Xb0"/>
                                 </constraints>
@@ -30,7 +34,7 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Testing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jz6-eg-1Vf">
-                                <rect key="frame" x="180" y="90" width="241" height="21"/>
+                                <rect key="frame" x="67" y="100.5" width="241" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Oem-Gw-a1t"/>
                                     <constraint firstAttribute="width" constant="241" id="oeL-Wx-yYZ"/>
@@ -39,13 +43,23 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rRA-SZ-v1H">
+                                <rect key="frame" x="169" y="141" width="36" height="30"/>
+                                <state key="normal" title="Rand"/>
+                                <connections>
+                                    <action selector="randBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bG9-ZE-3Db"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="EhR-V3-xYU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1:1.5" id="R5R-KA-gjm"/>
                             <constraint firstItem="EhR-V3-xYU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WYG-JU-hrO"/>
+                            <constraint firstItem="rRA-SZ-v1H" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="d0Y-pw-zYx"/>
                             <constraint firstItem="jz6-eg-1Vf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1:3" id="eRU-SN-bvB"/>
                             <constraint firstItem="jz6-eg-1Vf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fYR-ZS-okM"/>
+                            <constraint firstItem="EhR-V3-xYU" firstAttribute="top" secondItem="rRA-SZ-v1H" secondAttribute="bottom" constant="36.5" id="gdd-hl-Tx7"/>
+                            <constraint firstItem="rRA-SZ-v1H" firstAttribute="top" secondItem="jz6-eg-1Vf" secondAttribute="bottom" constant="19.5" id="lXM-CY-2X2"/>
                         </constraints>
                     </view>
                     <connections>
@@ -55,7 +69,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="377" y="321"/>
+            <point key="canvasLocation" x="-159" y="133"/>
         </scene>
     </scenes>
 </document>

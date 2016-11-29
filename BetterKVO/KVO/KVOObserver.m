@@ -7,8 +7,13 @@
 //
 
 #import "KVOObserver.h"
+#import "KVOBindCheck.h"
 
 @interface KVOObserver()
+
+@property (weak, nonatomic) NSObject *observedObject;
+
+@property (weak, nonatomic) NSObject *observer;
 
 @property (strong, nonatomic) NSMutableArray *observingKeyPaths;
 
@@ -30,7 +35,11 @@
 - (void)setObserver:(NSObject *)observer {
     _observer = observer;
     //Listener for the change of observer property
-    [self addObserver:self forKeyPath:@"observer" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"observer" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+}
+
+- (NSString *)observerId {
+    return [NSString stringWithFormat:@"%ld", _observer.hash];
 }
 
 - (void)startListening:(NSObject *)object forProperties:(NSArray *)propertyNames handleBlock:(void (^)(NSObject *, NSDictionary *))handleBlock {
@@ -38,7 +47,7 @@
     _observedObject = object;
     for (NSString *keyPath in propertyNames) {
         @try {
-            [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew context:nil];
+            [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
             [_observingKeyPaths addObject:keyPath];
         } @catch (NSException *exception) {
             NSLog(@"There was an exception when adding observer for key path %@ - e: %@", keyPath, exception);
@@ -52,7 +61,7 @@
     for (NSString *keyPath in propertyNames) {
         if ([_observingKeyPaths indexOfObject:keyPath] == NSNotFound) {
             @try {
-                [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew context:nil];
+                [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
                 [_observingKeyPaths addObject:keyPath];
             } @catch (NSException *exception) {
                 NSLog(@"There was an exception when adding observer for key path %@ - e: %@", keyPath, exception);
@@ -76,7 +85,13 @@
         }
     } else if (_handlePropertiesBlock) {
         @try {
-            _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);
+            NSString *lockKey = [NSString stringWithFormat:@"%ld_%ld", _observedObject.hash, _observer.hash];
+            if (![[KVOBindCheck checker] isKeyLocked:lockKey]) {
+                NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash];
+                [[KVOBindCheck checker] lockChangeForKey:key];
+                _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);
+                [[KVOBindCheck checker] unlockChangeForKey:key];
+            }
 
         } @catch (NSException *exception) {
             NSLog(@"There was an exception when getting observed properties with key path %@ - e: %@", keyPath, exception);
@@ -97,6 +112,8 @@
                 NSLog(@"Remove property %@", keyPath);
             }
         }
+        NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash]; //Lock observer-->observedObject
+        [[KVOBindCheck checker] removeKey:key];
     }
 }
 
@@ -104,6 +121,9 @@
     KVOObserver *kvoObject = [[KVOObserver alloc] init];
     kvoObject.observer = object;
     [kvoObject startListening:observedObject forProperties:propertyNames handleBlock:handleBlock];
+    NSString *key = [NSString stringWithFormat:@"%ld_%ld", object.hash, observedObject.hash]; //Lock observer-->observedObject
+    [[KVOBindCheck checker] addKey:key];
+    
     return kvoObject;
 }
 

@@ -12,23 +12,23 @@
 
 @implementation NSObject (BetterKVO)
 
-- (void)addObserver:(NSObject *)observer forProperties:(NSArray *)keyPaths withObserveBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
-    NSMutableDictionary *observers = [[self observers] mutableCopy];
-    NSString *hashID = [NSString stringWithFormat:@"%d", observer.hash];
+- (void)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
+    NSMutableDictionary *observers = [[object observers] mutableCopy];
+    NSString *hashID = [NSString stringWithFormat:@"%ld", self.hash];
     KVOObserver *addedObserver = observers[hashID];
-
+    
     if (!addedObserver) {
-        addedObserver = [KVOObserver object:observer startListening:self forProperties:keyPaths handleBlock:handleObservedProperties];
+        addedObserver = [KVOObserver object:self startListening:object forProperties:keyPaths handleBlock:handleObservedProperties];
     } else {
         [addedObserver addListeningProperties:keyPaths];
     }
     observers[hashID] = addedObserver;
-    objc_setAssociatedObject(self, @selector(observers), observers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(object, @selector(observers), observers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)removeObserver:(NSObject *)observer {
     NSMutableDictionary *observers = [[self observers] mutableCopy];
-    NSString *hashID = [NSString stringWithFormat:@"%d", observer.hash];
+    NSString *hashID = [NSString stringWithFormat:@"%ld", observer.hash];
     KVOObserver *addedObserver = observers[hashID];
     [self stopListening:addedObserver];
 }
@@ -44,9 +44,9 @@
 
 - (void)stopListening:(KVOObserver *)kvoObserver {
     NSMutableDictionary *observers = [[self observers] mutableCopy];
-    NSString *hashID = [NSString stringWithFormat:@"%d", kvoObserver.observer.hash];
-    if (hashID) {
-        [observers removeObjectForKey:hashID];
+    NSString *observerId = kvoObserver.observerId;
+    if (observerId) {
+        [observers removeObjectForKey:observerId];
         objc_setAssociatedObject(self, @selector(observers), observers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
