@@ -85,8 +85,15 @@
         }
     } else if (_handlePropertiesBlock) {
         @try {
+            /*
+             TODO: 
+                Currently this code lock on [Object -> Object] level.
+                We need to define key to lock on property level
+             */
             NSString *lockKey = [NSString stringWithFormat:@"%ld_%ld", _observedObject.hash, _observer.hash];
             if (![[KVOBindCheck checker] isKeyLocked:lockKey]) {
+                //We lock the flow that if _observedObject also subcribe for the changes of _observer's properties
+                //So in the KVO Observer of _observedObject, the _observer will be observedObject and _observedObject will be observer
                 NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash];
                 [[KVOBindCheck checker] lockChangeForKey:key];
                 _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);

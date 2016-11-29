@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA67AB311D1E54880091DB77 /* ObjectBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = AA67AB301D1E54880091DB77 /* ObjectBinding.m */; };
 		AAA074D21DED121D00EA45DC /* KVOBindCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA074D11DED121D00EA45DC /* KVOBindCheck.m */; };
 		AAA2F1081D18E41C00F4B6A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F1071D18E41C00F4B6A8 /* main.m */; };
 		AAA2F10B1D18E41C00F4B6A8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F10A1D18E41C00F4B6A8 /* AppDelegate.m */; };
@@ -21,8 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AA67AB2F1D1E54600091DB77 /* ObjectBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectBinding.h; sourceTree = "<group>"; };
-		AA67AB301D1E54880091DB77 /* ObjectBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectBinding.m; sourceTree = "<group>"; };
 		AAA074D01DED121D00EA45DC /* KVOBindCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOBindCheck.h; sourceTree = "<group>"; };
 		AAA074D11DED121D00EA45DC /* KVOBindCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOBindCheck.m; sourceTree = "<group>"; };
 		AAA2F1031D18E41C00F4B6A8 /* BetterKVO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterKVO.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,8 +101,6 @@
 				AAA2F11F1D18E4CF00F4B6A8 /* NSObject+BetterKVO.m */,
 				AAA2F1211D18E80000F4B6A8 /* KVOObserver.h */,
 				AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */,
-				AA67AB2F1D1E54600091DB77 /* ObjectBinding.h */,
-				AA67AB301D1E54880091DB77 /* ObjectBinding.m */,
 				AAA074D01DED121D00EA45DC /* KVOBindCheck.h */,
 				AAA074D11DED121D00EA45DC /* KVOBindCheck.m */,
 			);
@@ -189,7 +184,6 @@
 				AAA074D21DED121D00EA45DC /* KVOBindCheck.m in Sources */,
 				AAA58FBA1D1A30E400D0B538 /* TestModel.m in Sources */,
 				AAA2F1231D18E80000F4B6A8 /* KVOObserver.m in Sources */,
-				AA67AB311D1E54880091DB77 /* ObjectBinding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +297,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				HEADER_SEARCH_PATHS = (
+					"\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = BetterKVO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kei.BetterKVO;
@@ -314,6 +312,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				HEADER_SEARCH_PATHS = (
+					"\"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts/include\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = BetterKVO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kei.BetterKVO;
