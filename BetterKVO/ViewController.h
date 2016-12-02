@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BIND.h"
 
 @interface ViewController : UIViewController
 

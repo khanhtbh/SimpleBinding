@@ -29,6 +29,7 @@
     _model2 = [[TestModel alloc] init];
     __weak typeof(&*self) weakSelf = self;
     
+    Binder *bindObject = BIND(_model, stringProperty, ~>, _model2, stringProperty);
     
     [_model2 subcribeChangesForProperties:@[@"stringProperty"] ofObject:_model withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
         NSString *stringProperty = observedProperties[@"stringProperty"];
