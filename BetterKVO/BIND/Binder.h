@@ -14,17 +14,25 @@ typedef NS_ENUM(NSUInteger, BindDirection) {
     BindDirectionTwoWay = 2,
 };
 
+@class Binder;
+
+typedef BOOL (^FilterProperty)(id property);
+
+typedef id (^TransformProperty)(id property);
+
+typedef void (^BindAction)(id leftProperty, id rightProperty);
+
 @interface Binder : NSObject
 
-@property (weak, nonatomic) NSObject *leftHandObject;
+@property (strong, nonatomic) Binder* (^filterLeft)(FilterProperty);
 
-@property (strong, nonatomic) NSString *lhObjectProperty;
+@property (strong, nonatomic) Binder* (^filterRight)(FilterProperty);
 
-@property (weak, nonatomic) NSObject *rightHandObject;
+@property (strong, nonatomic) Binder* (^transformLeft)(TransformProperty);
 
-@property (strong, nonatomic) NSString *rhObjectProperty;
+@property (strong, nonatomic) Binder* (^transformRight)(TransformProperty);
 
-@property (nonatomic) BindDirection bindDirection;
+@property (strong, nonatomic) void (^action)(BindAction);
 
 - (id)initWithLeftObject:(NSObject *)leftObj
             leftProperty:(NSString *)leftProp
@@ -32,11 +40,4 @@ typedef NS_ENUM(NSUInteger, BindDirection) {
            rightProperty:(NSString *)rightProp
            bindDirection:(BindDirection)direction;
 
-- (Binder *)filterLeft:(BOOL (^)(id leftProperty))filterLeft;
-
-- (Binder *)filterRight:(BOOL (^)(id rightProperty))filterLeft;
-
-- (Binder *)transformLeft:(id (^)(id leftProperty))transformLeft;
-
-- (Binder *)transformRight:(id (^)(id rightProperty))transformRight;
 @end

@@ -24,6 +24,7 @@
 		AA116CFD1DF1262F00DA1D1E /* BIND.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIND.h; sourceTree = "<group>"; };
 		AA116D011DF130B200DA1D1E /* Binder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Binder.h; sourceTree = "<group>"; };
 		AA116D021DF130B200DA1D1E /* Binder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Binder.m; sourceTree = "<group>"; };
+		AA116D041DF16BE700DA1D1E /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		AAA074D01DED121D00EA45DC /* KVOBindCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVOBindCheck.h; sourceTree = "<group>"; };
 		AAA074D11DED121D00EA45DC /* KVOBindCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOBindCheck.m; sourceTree = "<group>"; };
 		AAA2F1031D18E41C00F4B6A8 /* BetterKVO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterKVO.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +62,7 @@
 				AA116CFD1DF1262F00DA1D1E /* BIND.h */,
 				AA116D011DF130B200DA1D1E /* Binder.h */,
 				AA116D021DF130B200DA1D1E /* Binder.m */,
+				AA116D041DF16BE700DA1D1E /* Macros.h */,
 			);
 			path = BIND;
 			sourceTree = "<group>";

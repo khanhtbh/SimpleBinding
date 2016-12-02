@@ -29,7 +29,18 @@
     _model2 = [[TestModel alloc] init];
     __weak typeof(&*self) weakSelf = self;
     
-    Binder *bindObject = BIND(_model, stringProperty, ~>, _model2, stringProperty);
+    BIND(_model, stringProperty, <>, _model2, stringProperty)//Two ways binding
+    .filterLeft(^BOOL(id property) {//Validate left object property
+        return YES;
+    }).filterRight(^BOOL(id property) {//Validate right object property
+        return NO;
+    }).transformLeft(^id(id property) {//transform left object property to new value which will be set to right object property
+        return property;
+    }).transformRight(^id(id property){//transform right object property to new value which will be set to left object property
+        return NULL;
+    }).action(^void (id leftProperty, id rightProperty){//call when objects' properties changed. These are raw properties
+        
+    });
     
     [_model2 subcribeChangesForProperties:@[@"stringProperty"] ofObject:_model withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
         NSString *stringProperty = observedProperties[@"stringProperty"];
