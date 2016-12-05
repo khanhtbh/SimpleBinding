@@ -85,20 +85,22 @@
         }
     } else if (_handlePropertiesBlock) {
         @try {
-            /*
-             TODO: 
-                Currently this code lock on [Object -> Object] level.
-                We need to define key to lock on property level
-             */
-            NSString *lockKey = [NSString stringWithFormat:@"%ld_%ld", _observedObject.hash, _observer.hash];
-            if (![[KVOBindCheck checker] isKeyLocked:lockKey]) {
-                //We lock the flow that if _observedObject also subcribe for the changes of _observer's properties
-                //So in the KVO Observer of _observedObject, the _observer will be observedObject and _observedObject will be observer
-                NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash];
-                [[KVOBindCheck checker] lockChangeForKey:key];
-                _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);
-                [[KVOBindCheck checker] unlockChangeForKey:key];
-            }
+            _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);
+
+//            /*
+//             TODO: 
+//                Currently this code lock on [Object -> Object] level.
+//                We need to define key to lock on property level
+//             */
+//            NSString *lockKey = [NSString stringWithFormat:@"%ld_%ld", _observedObject.hash, _observer.hash];
+//            if (![[KVOBindCheck checker] isKeyLocked:lockKey]) {
+//                //We lock the flow that if _observedObject also subcribe for the changes of _observer's properties
+//                //So in the KVO Observer of _observedObject, the _observer will be observedObject and _observedObject will be observer
+//                NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash];
+//                [[KVOBindCheck checker] lockChangeForKey:key];
+//                _handlePropertiesBlock(_observedObject, [_observedObject dictionaryWithValuesForKeys:_observingKeyPaths]);
+//                [[KVOBindCheck checker] unlockChangeForKey:key];
+//            }
 
         } @catch (NSException *exception) {
             NSLog(@"There was an exception when getting observed properties with key path %@ - e: %@", keyPath, exception);
@@ -119,8 +121,8 @@
                 NSLog(@"Remove property %@", keyPath);
             }
         }
-        NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash]; //Lock observer-->observedObject
-        [[KVOBindCheck checker] removeKey:key];
+//        NSString *key = [NSString stringWithFormat:@"%ld_%ld", _observer.hash, _observedObject.hash]; //Lock observer-->observedObject
+//        [[KVOBindCheck checker] removeKey:key];
     }
 }
 
@@ -128,8 +130,8 @@
     KVOObserver *kvoObject = [[KVOObserver alloc] init];
     kvoObject.observer = object;
     [kvoObject startListening:observedObject forProperties:propertyNames handleBlock:handleBlock];
-    NSString *key = [NSString stringWithFormat:@"%ld_%ld", object.hash, observedObject.hash]; //Lock observer-->observedObject
-    [[KVOBindCheck checker] addKey:key];
+//    NSString *key = [NSString stringWithFormat:@"%ld_%ld", object.hash, observedObject.hash]; //Lock observer-->observedObject
+//    [[KVOBindCheck checker] addKey:key];
     
     return kvoObject;
 }

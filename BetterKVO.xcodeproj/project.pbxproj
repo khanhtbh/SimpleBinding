@@ -59,10 +59,10 @@
 		AA116CFC1DF11EAF00DA1D1E /* BIND */ = {
 			isa = PBXGroup;
 			children = (
+				AA116D041DF16BE700DA1D1E /* Macros.h */,
 				AA116CFD1DF1262F00DA1D1E /* BIND.h */,
 				AA116D011DF130B200DA1D1E /* Binder.h */,
 				AA116D021DF130B200DA1D1E /* Binder.m */,
-				AA116D041DF16BE700DA1D1E /* Macros.h */,
 			);
 			path = BIND;
 			sourceTree = "<group>";
