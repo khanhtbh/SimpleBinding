@@ -18,4 +18,6 @@
 
 - (NSArray *)observers;
 
+- (void)stopListening:(KVOObserver *)kvoObserver;
+
 @end

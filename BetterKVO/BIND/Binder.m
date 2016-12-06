@@ -276,15 +276,14 @@
     return nil;
 }
 
-
-- (void)observedObjectDeallocated:(NSObject *)object {
-    //Left or right object deallocated
+- (void)stopListening:(KVOObserver *)kvoObserver {
+    [super stopListening:kvoObserver];
     NSLog(@"remove bind object");
     [[BMNG bmng] removeBindObject:self];
 }
 
 - (void)dealloc {
-    
+    NSLog(@"Binder dealloc");
 }
 
 
