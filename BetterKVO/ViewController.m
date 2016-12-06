@@ -31,8 +31,8 @@
     _model2 = [[TestModel alloc] init];
     __weak typeof(&*self) weakSelf = self;
     
-    _testBinder = BIND(_model, stringProperty, <>, _model2, stringProperty);//Two ways binding
-    _testBinder.filterLeft(^BOOL(id property) {//Validate left object property
+    BIND(_model, stringProperty, <>, _model2, stringProperty)//Two ways binding
+    .filterLeft(^BOOL(id property) {//Validate left object property
         return YES;
     })
     .filterRight(^BOOL(id property) {//Validate right object property
@@ -62,6 +62,9 @@
 - (IBAction)randBtnAction:(id)sender {
     NSInteger randValue = arc4random();
     _model2.stringProperty = [NSString stringWithFormat:@"%ld", randValue];
+}
+- (IBAction)removeModel1Action:(id)sender {
+    _model = nil;
 }
 
 - (void)didReceiveMemoryWarning {

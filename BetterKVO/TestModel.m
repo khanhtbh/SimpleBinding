@@ -10,4 +10,8 @@
 
 @implementation TestModel
 
+- (void)dealloc {
+    NSLog(@"Test Model Dealloc");
+}
+
 @end

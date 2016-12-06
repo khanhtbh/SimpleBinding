@@ -14,9 +14,16 @@ typedef void (^ObservedPropertiesBlock) (NSObject *observedObject, NSDictionary 
 
 @interface KVOObserver : NSObject
 
-+ (KVOObserver *)object:(NSObject *)object startListening:(NSObject *)object forProperties:(NSArray *)propertyNames handleBlock:(void(^)(NSObject *observedObject, NSDictionary *properties))handleBlock;
+@property (weak, nonatomic) NSObject *observedObject;
 
-- (NSString *)observerId;
+@property (weak, nonatomic) NSObject *observer;
+
+@property (strong, nonatomic) NSString *observedId;
+
+@property (strong, nonatomic) NSMutableArray *observingKeyPaths;
+
+
++ (KVOObserver *)object:(NSObject *)object startListening:(NSObject *)object forProperties:(NSArray *)propertyNames handleBlock:(void(^)(NSObject *observedObject, NSDictionary *properties))handleBlock;
 
 - (void)startListening:(NSObject *)object forProperties:(NSArray *)propertyNames handleBlock:(void(^)(NSObject *observedObject, NSDictionary *properties))handleBlock;
 
@@ -28,5 +35,5 @@ typedef void (^ObservedPropertiesBlock) (NSObject *observedObject, NSDictionary 
 
 @optional
 - (void)stopListening:(KVOObserver *)observer;
-
+- (void)observedObjectDeallocated:(NSObject *)object;
 @end

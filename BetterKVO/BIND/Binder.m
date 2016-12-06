@@ -10,6 +10,8 @@
 #import "Macros.h"
 #import "NSObject+BetterKVO.h"
 #import <libkern/OSAtomic.h>
+#import <objc/runtime.h>
+#import "BMNG.h"
 
 @interface Binder()
 
@@ -53,53 +55,64 @@
            bindDirection:(BindDirection)direction {
     self = [super init];
     if (self) {
-        
+        [self setupBlockProperty];
         //Setup the lock way
         allowToLeftWay = direction == BindDirectionToLeft || direction == BindDirectionTwoWay ? 1 : 0;
         allowToRightWay = direction == BindDirectionToRight || direction == BindDirectionTwoWay ? 1 : 0;
-//TODO: Add a checking function to make sure that the properties exists in binding objects
         _leftHandObject = leftObj;
         _lhObjectProperty = leftProp;
         _rightHandObject = rightObj;
         _rhObjectProperty = rightProp;
         _bindDirection = direction;
-        weakify(self);
-        switch (_bindDirection) {
-            case BindDirectionTwoWay: {
-                
-                [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
-                    strongify(self);
-                    [self handleTheChangesFrom:observedObject];
-                }];
-                
-                [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
-                    strongify(self);
-                    [self handleTheChangesFrom:observedObject];
-                }];
-            }
-                break;
-            case BindDirectionToLeft: {
-                //Subcribe the change of Right Object to get new value and set it to left object
-                [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
-                    strongify(self);
-                    [self handleTheChangesFrom:observedObject];
-                }];
-            }
-                break;
-                
-            case BindDirectionToRight: {
-                //Subcribe the change of Left Object to get new value and set it to Right Object
-                [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
-                    strongify(self);
-                    [self handleTheChangesFrom:observedObject];
-                }];
-            }
-                break;
-            default:
-                break;
-        }
-        [self setupBlockProperty];
         
+        BOOL check = YES;
+        if (!class_getProperty([_leftHandObject class], leftProp.UTF8String)) {
+            // it has that property!
+            check = NO;
+        }
+        if (!class_getProperty([_rightHandObject class], rightProp.UTF8String)) {
+            // it has that property!
+            check = NO;
+        }
+        if (check) {
+            weakify(self);
+            switch (_bindDirection) {
+                case BindDirectionTwoWay: {
+                    
+                    [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                        strongify(self);
+                        [self handleTheChangesFrom:observedObject];
+                    }];
+                    
+                    [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                        strongify(self);
+                        [self handleTheChangesFrom:observedObject];
+                    }];
+                }
+                    break;
+                case BindDirectionToLeft: {
+                    //Subcribe the change of Right Object to get new value and set it to left object
+                    [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                        strongify(self);
+                        [self handleTheChangesFrom:observedObject];
+                    }];
+                }
+                    break;
+                    
+                case BindDirectionToRight: {
+                    //Subcribe the change of Left Object to get new value and set it to Right Object
+                    [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                        strongify(self);
+                        [self handleTheChangesFrom:observedObject];
+                    }];
+                }
+                    break;
+                default:
+                    break;
+            }
+            
+            [[BMNG bmng] addBindObject:self];
+        }
 
     }
     return self;
@@ -249,6 +262,30 @@
     }
 }
 
+- (KVOObserver *)getObserverForBindDirection:(BindDirection)bindDirection {
+    
+    if (bindDirection ==  BindDirectionToLeft) {
+        NSDictionary *kvoObservers = _leftHandObject.kvoObservers;
+        NSString *objId = [NSString stringWithFormat:@"%ld", self.hash];
+        return kvoObservers[objId];
+    } else if (bindDirection ==  BindDirectionToRight) {
+        NSDictionary *kvoObservers = _rightHandObject.kvoObservers;
+        NSString *objId = [NSString stringWithFormat:@"%ld", self.hash];
+        return kvoObservers[objId];
+    }
+    return nil;
+}
+
+
+- (void)observedObjectDeallocated:(NSObject *)object {
+    //Left or right object deallocated
+    NSLog(@"remove bind object");
+    [[BMNG bmng] removeBindObject:self];
+}
+
+- (void)dealloc {
+    
+}
 
 
 @end

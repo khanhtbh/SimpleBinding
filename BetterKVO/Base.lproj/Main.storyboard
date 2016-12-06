@@ -50,15 +50,28 @@
                                     <action selector="randBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bG9-ZE-3Db"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Rh-JJ-Vis">
+                                <rect key="frame" x="164" y="256" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="IAT-Mu-vlg"/>
+                                    <constraint firstAttribute="height" constant="30" id="fya-nN-MMH"/>
+                                </constraints>
+                                <state key="normal" title="unbind"/>
+                                <connections>
+                                    <action selector="removeModel1Action:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8uM-ws-YYR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="EhR-V3-xYU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1:1.5" id="R5R-KA-gjm"/>
                             <constraint firstItem="EhR-V3-xYU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WYG-JU-hrO"/>
                             <constraint firstItem="rRA-SZ-v1H" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="d0Y-pw-zYx"/>
+                            <constraint firstItem="4Rh-JJ-Vis" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dGH-vr-FCI"/>
                             <constraint firstItem="jz6-eg-1Vf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1:3" id="eRU-SN-bvB"/>
                             <constraint firstItem="jz6-eg-1Vf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fYR-ZS-okM"/>
                             <constraint firstItem="EhR-V3-xYU" firstAttribute="top" secondItem="rRA-SZ-v1H" secondAttribute="bottom" constant="36.5" id="gdd-hl-Tx7"/>
+                            <constraint firstItem="4Rh-JJ-Vis" firstAttribute="top" secondItem="EhR-V3-xYU" secondAttribute="bottom" constant="18.5" id="iQD-1M-GFa"/>
                             <constraint firstItem="rRA-SZ-v1H" firstAttribute="top" secondItem="jz6-eg-1Vf" secondAttribute="bottom" constant="19.5" id="lXM-CY-2X2"/>
                         </constraints>
                     </view>

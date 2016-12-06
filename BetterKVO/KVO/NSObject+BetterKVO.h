@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class KVOObserver;
+
 @interface NSObject (BetterKVO)
 
-- (void)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
+- (KVOObserver *)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
-- (void)removeObserver:(NSObject *)observer;
+- (NSDictionary *)kvoObservers;
+
+- (NSArray *)observers;
 
 @end
