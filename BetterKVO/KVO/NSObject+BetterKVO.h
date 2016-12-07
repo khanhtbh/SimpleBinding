@@ -14,7 +14,7 @@
 
 - (KVOObserver *)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
-- (NSDictionary *)kvoObservers;
+- (NSDictionary *)managedObservers;
 
 - (NSArray *)observers;
 

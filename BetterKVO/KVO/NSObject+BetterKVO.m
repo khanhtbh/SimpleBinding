@@ -17,18 +17,18 @@ static NSMutableDictionary *reservedDeallocImps;
 //TODO: need to change all logic from saving the observers in observed object to saving them in observer object
 
 - (KVOObserver *)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
-    NSMutableDictionary *kvoObservers = [[self kvoObservers] mutableCopy];
+    NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
     NSString *hashID = [NSString stringWithFormat:@"%ld", object.hash];
-    KVOObserver *addedObserver = kvoObservers[hashID];
+    KVOObserver *addedObserver = managedObservers[hashID];
     
     if (!addedObserver) {
         addedObserver = [KVOObserver object:self startListening:object forProperties:keyPaths handleBlock:handleObservedProperties];
     } else {
         [addedObserver addListeningProperties:keyPaths];
     }
-    kvoObservers[hashID] = addedObserver;
+    managedObservers[hashID] = addedObserver;
     //Set all observers to associcated with subcriber
-    objc_setAssociatedObject(self, @selector(kvoObservers), kvoObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(managedObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSMutableArray *observers = [[object observers] mutableCopy];
     if ([observers indexOfObject:addedObserver] == NSNotFound) {
@@ -40,12 +40,12 @@ static NSMutableDictionary *reservedDeallocImps;
     return addedObserver;
 }
 
-- (NSDictionary *)kvoObservers {
-    NSDictionary *kvoObservers =  objc_getAssociatedObject(self, @selector(kvoObservers));
-    if (!kvoObservers) {
-        kvoObservers = @{};
+- (NSDictionary *)managedObservers {
+    NSDictionary *managedObservers =  objc_getAssociatedObject(self, @selector(managedObservers));
+    if (!managedObservers) {
+        managedObservers = @{};
     }
-    return kvoObservers;
+    return managedObservers;
 }
 
 - (NSArray *)observers {
@@ -95,9 +95,9 @@ static NSMutableDictionary *reservedDeallocImps;
 }
 
 - (void)stopListening:(KVOObserver *)kvoObserver {
-    NSMutableDictionary *kvoObservers = [[self kvoObservers] mutableCopy];
-    [kvoObservers removeObjectForKey:kvoObserver.observedId];
-    objc_setAssociatedObject(self, @selector(kvoObservers), kvoObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
+    [managedObservers removeObjectForKey:kvoObserver.observedId];
+    objc_setAssociatedObject(self, @selector(managedObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 

@@ -262,20 +262,6 @@
     }
 }
 
-- (KVOObserver *)getObserverForBindDirection:(BindDirection)bindDirection {
-    
-    if (bindDirection ==  BindDirectionToLeft) {
-        NSDictionary *kvoObservers = _leftHandObject.kvoObservers;
-        NSString *objId = [NSString stringWithFormat:@"%ld", self.hash];
-        return kvoObservers[objId];
-    } else if (bindDirection ==  BindDirectionToRight) {
-        NSDictionary *kvoObservers = _rightHandObject.kvoObservers;
-        NSString *objId = [NSString stringWithFormat:@"%ld", self.hash];
-        return kvoObservers[objId];
-    }
-    return nil;
-}
-
 - (void)stopListening:(KVOObserver *)kvoObserver {
     [super stopListening:kvoObserver];
     NSLog(@"remove bind object");
