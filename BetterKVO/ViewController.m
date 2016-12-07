@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "NSObject+BetterKVO.h"
 #import "TestModel.h"
+#import "TestModelNumber.h"
 
 
 @interface ViewController ()
@@ -16,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *testTextfield;
 @property (weak, nonatomic) IBOutlet UILabel *testLabel;
 @property (strong, nonatomic) TestModel *model;
-@property (strong, nonatomic) TestModel *model2;
+@property (strong, nonatomic) TestModelNumber *model2;
 
 @property (strong, nonatomic) Binder *testBinder;
 
@@ -28,10 +29,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _model = [[TestModel alloc] init];
-    _model2 = [[TestModel alloc] init];
+    _model2 = [[TestModelNumber alloc] init];
     __weak typeof(&*self) weakSelf = self;
     
-    BIND(_model, stringProperty, <>, _model2, stringProperty)//Two ways binding
+    BIND(_model, stringProperty, <>, _model2, numberProperty)//Two ways binding
     .filterLeft(^BOOL(id property) {//Validate left object property
         return YES;
     })
@@ -40,18 +41,18 @@
     })
     .transformLeft(^id(id property) {//transform left object property to new value which will be set to right object property
         NSString *value = property;
-        return value;
+        return @(value.length);
     })
     .transformRight(^id(id property){//transform right object property to new value which will be set to left object property
-        NSString *value = property;
-        return value;
+        NSNumber *value = property;
+        return [NSString stringWithFormat:@"%ld", value.integerValue];
     })
     .action(^void (id leftProperty, id rightProperty){//call when objects' properties changed. These are raw properties
         NSLog(@"Binding action");
         
-        NSLog(@"Model 2 property: %@ - Model 1 property: %@", weakSelf.model2.stringProperty, weakSelf.model.stringProperty);
+        NSLog(@"Model 2 property: %@ - Model 1 property: %@", weakSelf.model2.numberProperty, weakSelf.model.stringProperty);
         
-        NSLog(@"Model 1 property: %@ - Model 2 property: %@", weakSelf.model.stringProperty, weakSelf.model2.stringProperty);
+        NSLog(@"Model 1 property: %@ - Model 2 property: %@", weakSelf.model.stringProperty, weakSelf.model2.numberProperty);
     });
 
 }
@@ -61,10 +62,11 @@
 }
 - (IBAction)randBtnAction:(id)sender {
     NSInteger randValue = arc4random();
-    _model2.stringProperty = [NSString stringWithFormat:@"%ld", randValue];
+    _model2.numberProperty = @(randValue);
 }
 - (IBAction)removeModel1Action:(id)sender {
     _model = nil;
+    _model2 = nil;
 }
 
 - (void)didReceiveMemoryWarning {

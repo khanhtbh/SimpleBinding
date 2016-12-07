@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import "KVOObserver.h"
 
-static IMP originalDeallocImp;
+static NSMutableDictionary *reservedDeallocImps;
 
 @implementation NSObject (BetterKVO)
 
@@ -58,15 +58,19 @@ static IMP originalDeallocImp;
 }
 
 - (void)swizzleDeallocOfObject {
-    if (originalDeallocImp) return;
-    Method newMethod = class_getInstanceMethod(self.class, @selector(newDealloc));
+    if (!reservedDeallocImps) {
+        reservedDeallocImps = [@{} mutableCopy];
+    }
+    if (reservedDeallocImps[NSStringFromClass(self.class)]) return;
+    Method newMethod = class_getInstanceMethod([NSObject class], @selector(newDealloc));
     IMP newMethodImp = method_getImplementation(newMethod);
     const char* returnTypes = method_getTypeEncoding(newMethod);
     
     
     Method originMethod = class_getInstanceMethod(self.class, NSSelectorFromString(@"dealloc"));
     if (originMethod) {
-        originalDeallocImp = method_setImplementation(originMethod, newMethodImp);
+        IMP originalDeallocImp = method_setImplementation(originMethod, newMethodImp);
+        reservedDeallocImps[NSStringFromClass(self.class)] = [NSValue valueWithPointer:originalDeallocImp];
     } else {
         class_addMethod(self.class, NSSelectorFromString(@"dealloc"), newMethodImp, returnTypes);
 
@@ -84,7 +88,8 @@ static IMP originalDeallocImp;
         
         [observer removeObserver:observer forKeyPath:@"observedObject"];
     }
-    if (originalDeallocImp) {
+    if (reservedDeallocImps[NSStringFromClass(self.class)]) {
+        IMP originalDeallocImp = [reservedDeallocImps[NSStringFromClass(self.class)] pointerValue];
         ((void(*)(id,SEL))originalDeallocImp)(self, _cmd);
     }
 }

@@ -18,6 +18,7 @@
 		AAA2F1201D18E4CF00F4B6A8 /* NSObject+BetterKVO.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F11F1D18E4CF00F4B6A8 /* NSObject+BetterKVO.m */; };
 		AAA2F1231D18E80000F4B6A8 /* KVOObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */; };
 		AAA58FBA1D1A30E400D0B538 /* TestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA58FB91D1A30E400D0B538 /* TestModel.m */; };
+		AAF9143B1DF7F82400EE1FCE /* TestModelNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9143A1DF7F82400EE1FCE /* TestModelNumber.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,8 @@
 		AAA2F1221D18E80000F4B6A8 /* KVOObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVOObserver.m; sourceTree = "<group>"; };
 		AAA58FB81D1A30E400D0B538 /* TestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModel.h; sourceTree = "<group>"; };
 		AAA58FB91D1A30E400D0B538 /* TestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModel.m; sourceTree = "<group>"; };
+		AAF914391DF7F82400EE1FCE /* TestModelNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModelNumber.h; sourceTree = "<group>"; };
+		AAF9143A1DF7F82400EE1FCE /* TestModelNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModelNumber.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 				AAA2F1141D18E41C00F4B6A8 /* LaunchScreen.storyboard */,
 				AAA2F1171D18E41C00F4B6A8 /* Info.plist */,
 				AAA2F1061D18E41C00F4B6A8 /* Supporting Files */,
+				AAF914391DF7F82400EE1FCE /* TestModelNumber.h */,
+				AAF9143A1DF7F82400EE1FCE /* TestModelNumber.m */,
 			);
 			path = BetterKVO;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				AAA2F10B1D18E41C00F4B6A8 /* AppDelegate.m in Sources */,
 				AAA2F1081D18E41C00F4B6A8 /* main.m in Sources */,
 				AAA58FBA1D1A30E400D0B538 /* TestModel.m in Sources */,
+				AAF9143B1DF7F82400EE1FCE /* TestModelNumber.m in Sources */,
 				AA1C9DC41DF5718500C43157 /* BMNG.m in Sources */,
 				AAA2F1231D18E80000F4B6A8 /* KVOObserver.m in Sources */,
 				AA116D031DF130B200DA1D1E /* Binder.m in Sources */,
