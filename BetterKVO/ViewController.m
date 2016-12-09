@@ -37,7 +37,10 @@
         return YES;
     })
     .filterRight(^BOOL(id property) {//Validate right object property
-        return YES;
+        NSNumber *number = property;
+        BOOL result = (number.integerValue % 2 == 0);
+        NSLog(@"number.integerValue %% 2 = %ld, %d", number.integerValue % 2, result);
+        return result;
     })
     .transformLeft(^id(id property) {//transform left object property to new value which will be set to right object property
         NSString *value = property;
@@ -57,11 +60,11 @@
     
     
     
-    [self subcribeForChanges:@[@"numberProperty"]
-                    ofObject:_model2
+    [self subcribeObject:_model
+              forChanges:@[@"stringProperty"]
                handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
-        NSNumber *newValue = observedProperties[@"numberProperty"];
-        weakSelf.testLabel.text = newValue.stringValue;
+        NSString *newValue = observedProperties[@"stringProperty"];
+        weakSelf.testLabel.text = newValue;
     }];
 }
 

@@ -80,15 +80,15 @@
             switch (_bindDirection) {
                 case BindDirectionTwoWay: {
                     
-                    [self subcribeForChanges:@[leftProp]
-                                 ofObject:leftObj
+                    [self subcribeObject:leftObj
+                              forChanges:@[leftProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
                     
-                    [self subcribeForChanges:@[rightProp]
-                                 ofObject:rightObj
+                    [self subcribeObject:rightObj
+                              forChanges:@[rightProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
@@ -97,8 +97,8 @@
                     break;
                 case BindDirectionToLeft: {
                     //Subcribe the change of Right Object to get new value and set it to left object
-                    [self subcribeForChanges:@[rightProp]
-                                 ofObject:rightObj
+                    [self subcribeObject:rightObj
+                              forChanges:@[rightProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
@@ -108,8 +108,8 @@
                     
                 case BindDirectionToRight: {
                     //Subcribe the change of Left Object to get new value and set it to Right Object
-                    [self subcribeForChanges:@[leftProp]
-                                 ofObject:leftObj
+                    [self subcribeObject:leftObj
+                              forChanges:@[leftProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
@@ -173,46 +173,31 @@
     if ([object isEqual:_leftHandObject]) {
         BOOL isToRightAllow = [self getValueForBindDirection:BindDirectionToRight];
         id leftValue = [_leftHandObject valueForKey:_lhObjectProperty];
-        if (_filterLeftProperty && _filterLeftProperty(leftValue)) {
-            if (isToRightAllow) {
-                [self getAndSetValue:NO forBindDirection:BindDirectionToLeft];
-                if (_transformLeftProperty) {
-                    leftValue = _transformLeftProperty(leftValue);
-                }
-                [_rightHandObject setValue:leftValue forKey:_rhObjectProperty];
-                [self getAndSetValue:YES forBindDirection:BindDirectionToLeft];
-            }
-        } else {
-            if (isToRightAllow) {
-                [self getAndSetValue:NO forBindDirection:BindDirectionToLeft];
-                if (_transformLeftProperty) {
-                    leftValue = _transformLeftProperty(leftValue);
-                }
-                [_rightHandObject setValue:leftValue forKey:_rhObjectProperty];
-                [self getAndSetValue:YES forBindDirection:BindDirectionToLeft];
-            }
+        if (_filterLeftProperty) {
+            isToRightAllow = isToRightAllow && _filterLeftProperty(leftValue);
         }
+        if (isToRightAllow) {
+            [self getAndSetValue:NO forBindDirection:BindDirectionToLeft];
+            if (_transformLeftProperty) {
+                leftValue = _transformLeftProperty(leftValue);
+            }
+            [_rightHandObject setValue:leftValue forKey:_rhObjectProperty];
+            [self getAndSetValue:YES forBindDirection:BindDirectionToLeft];
+        }
+        
     } else if ([object isEqual:_rightHandObject]) {
         BOOL isToLeftAllow = [self getValueForBindDirection:BindDirectionToLeft];
         id rightValue = [_rightHandObject valueForKey:_rhObjectProperty];
-        if (_filterRightProperty && _filterRightProperty(rightValue)) {
-            if (isToLeftAllow) {
-                [self getAndSetValue:NO forBindDirection:BindDirectionToRight];
-                if (_transformRightProperty) {
-                    rightValue = _transformRightProperty(rightValue);
-                }
-                [_leftHandObject setValue:rightValue forKey:_lhObjectProperty];
-                [self getAndSetValue:YES forBindDirection:BindDirectionToRight];
+        if (_filterRightProperty) {
+            isToLeftAllow = isToLeftAllow &&  _filterRightProperty(rightValue);
+        }
+        if (isToLeftAllow) {
+            [self getAndSetValue:NO forBindDirection:BindDirectionToRight];
+            if (_transformRightProperty) {
+                rightValue = _transformRightProperty(rightValue);
             }
-        } else {
-            if (isToLeftAllow) {
-                [self getAndSetValue:NO forBindDirection:BindDirectionToRight];
-                if (_transformRightProperty) {
-                    rightValue = _transformRightProperty(rightValue);
-                }
-                [_leftHandObject setValue:rightValue forKey:_lhObjectProperty];
-                [self getAndSetValue:YES forBindDirection:BindDirectionToRight];
-            }
+            [_leftHandObject setValue:rightValue forKey:_lhObjectProperty];
+            [self getAndSetValue:YES forBindDirection:BindDirectionToRight];
         }
     }
     if (_bindAction) {

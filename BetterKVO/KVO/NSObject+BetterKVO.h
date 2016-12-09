@@ -12,16 +12,15 @@
 
 @interface NSObject (BetterKVO)
 
-
 /**
- Subcribe for the changes of Object's Propertys
-
- @param propertyKeys Array of property keys
+ Subcribe for the changes of Object's Properties
+ 
  @param object Object which is going to be observed
+ @param propertyKeys Array of property keys
  @param handleObservedProperties Block that handles the changes of Object's properties
  @return KVOObserver object - the observer
  */
-- (KVOObserver *)subcribeForChanges:(NSArray *)propertyKeys ofObject:(NSObject *)object handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
+- (KVOObserver *)subcribeObject:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
 
 /**
