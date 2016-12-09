@@ -35,5 +35,4 @@ typedef void (^ObservedPropertiesBlock) (NSObject *observedObject, NSDictionary 
 
 @optional
 - (void)stopListening:(KVOObserver *)observer;
-- (void)observedObjectDeallocated:(NSObject *)object;
 @end
