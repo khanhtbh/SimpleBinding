@@ -14,17 +14,15 @@ static NSMutableDictionary *reservedDeallocImps;
 
 @implementation NSObject (BetterKVO)
 
-//TODO: need to change all logic from saving the observers in observed object to saving them in observer object
-
-- (KVOObserver *)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
+- (KVOObserver *)subcribeForChanges:(NSArray *)propertyKeys ofObject:(NSObject *)object handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
     NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
     NSString *hashID = [NSString stringWithFormat:@"%ld", object.hash];
     KVOObserver *addedObserver = managedObservers[hashID];
     
     if (!addedObserver) {
-        addedObserver = [KVOObserver object:self startListening:object forProperties:keyPaths handleBlock:handleObservedProperties];
+        addedObserver = [KVOObserver object:self startListening:object forProperties:propertyKeys handleBlock:handleObservedProperties];
     } else {
-        [addedObserver addListeningProperties:keyPaths];
+        [addedObserver addListeningProperties:propertyKeys];
     }
     managedObservers[hashID] = addedObserver;
     //Set all observers to associcated with subcriber
@@ -52,12 +50,12 @@ static NSMutableDictionary *reservedDeallocImps;
     NSArray *observers =  objc_getAssociatedObject(self, @selector(observers));
     if (!observers) {
         observers = @[];
-        [self swizzleDeallocOfObject];
+        [self swizzleDealloc];
     }
     return observers;
 }
 
-- (void)swizzleDeallocOfObject {
+- (void)swizzleDealloc {
     if (!reservedDeallocImps) {
         reservedDeallocImps = [@{} mutableCopy];
     }
@@ -95,6 +93,7 @@ static NSMutableDictionary *reservedDeallocImps;
 }
 
 - (void)stopListening:(KVOObserver *)kvoObserver {
+    NSLog(@"Remove kvo object: %@", kvoObserver.observedId);
     NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
     [managedObservers removeObjectForKey:kvoObserver.observedId];
     objc_setAssociatedObject(self, @selector(managedObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

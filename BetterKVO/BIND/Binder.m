@@ -9,6 +9,7 @@
 #import "Binder.h"
 #import "Macros.h"
 #import "NSObject+BetterKVO.h"
+#import "KVOObserver.h"
 #import <libkern/OSAtomic.h>
 #import <objc/runtime.h>
 #import "BMNG.h"
@@ -79,12 +80,16 @@
             switch (_bindDirection) {
                 case BindDirectionTwoWay: {
                     
-                    [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                    [self subcribeForChanges:@[leftProp]
+                                 ofObject:leftObj
+                          handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
                     
-                    [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                    [self subcribeForChanges:@[rightProp]
+                                 ofObject:rightObj
+                          handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
@@ -92,7 +97,9 @@
                     break;
                 case BindDirectionToLeft: {
                     //Subcribe the change of Right Object to get new value and set it to left object
-                    [self subcribeChangesForProperties:@[rightProp] ofObject:rightObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                    [self subcribeForChanges:@[rightProp]
+                                 ofObject:rightObj
+                          handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
@@ -101,7 +108,9 @@
                     
                 case BindDirectionToRight: {
                     //Subcribe the change of Left Object to get new value and set it to Right Object
-                    [self subcribeChangesForProperties:@[leftProp] ofObject:leftObj withHandleBlock:^(NSObject *observedObject, NSDictionary *observedProperties) {
+                    [self subcribeForChanges:@[leftProp]
+                                 ofObject:leftObj
+                          handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
@@ -264,7 +273,7 @@
 
 - (void)stopListening:(KVOObserver *)kvoObserver {
     [super stopListening:kvoObserver];
-    NSLog(@"remove bind object");
+    NSLog(@"remove bind object - %@", kvoObserver.observedId);
     [[BMNG bmng] removeBindObject:self];
 }
 

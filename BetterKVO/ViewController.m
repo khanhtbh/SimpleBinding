@@ -54,7 +54,15 @@
         
         NSLog(@"Model 1 property: %@ - Model 2 property: %@", weakSelf.model.stringProperty, weakSelf.model2.numberProperty);
     });
-
+    
+    
+    
+    [self subcribeForChanges:@[@"numberProperty"]
+                    ofObject:_model2
+               handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
+        NSNumber *newValue = observedProperties[@"numberProperty"];
+        weakSelf.testLabel.text = newValue.stringValue;
+    }];
 }
 
 - (IBAction)textFieldValueChanged:(id)sender {

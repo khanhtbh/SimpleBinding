@@ -11,7 +11,7 @@
 @implementation TestModelNumber
 
 - (void)dealloc {
-    NSLog(@"Test Model 2 dealloc");
+    NSLog(@"Test Model 2 dealloc - %ld", self.hash);
 }
 
 @end

@@ -12,10 +12,31 @@
 
 @interface NSObject (BetterKVO)
 
-- (KVOObserver *)subcribeChangesForProperties:(NSArray *)keyPaths ofObject:(NSObject *)object withHandleBlock:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
+/**
+ Subcribe for the changes of Object's Propertys
+
+ @param propertyKeys Array of property keys
+ @param object Object which is going to be observed
+ @param handleObservedProperties Block that handles the changes of Object's properties
+ @return KVOObserver object - the observer
+ */
+- (KVOObserver *)subcribeForChanges:(NSArray *)propertyKeys ofObject:(NSObject *)object handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
+
+
+/**
+ Return the dictionary of KVOObserver objects. Get them by the hash string of observed object
+ 
+ @return Dictionary of KVOObserver objects
+ */
 - (NSDictionary *)managedObservers;
 
+
+/**
+ Return the array of KVOObserver object which are observing the changes of this object's property
+
+ @return Array of KVOObserver objects
+ */
 - (NSArray *)observers;
 
 - (void)stopListening:(KVOObserver *)kvoObserver;
