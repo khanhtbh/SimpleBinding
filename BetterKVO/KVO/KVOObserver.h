@@ -22,6 +22,8 @@ typedef void (^ObservedPropertiesBlock) (NSObject *observedObject, NSDictionary 
 
 @property (strong, nonatomic) NSMutableArray *observingKeyPaths;
 
+@property (strong, nonatomic) ObservedPropertiesBlock handlePropertiesBlock;
+
 
 + (KVOObserver *)object:(NSObject *)object startListening:(NSObject *)object forProperties:(NSArray *)propertyNames handleBlock:(void(^)(NSObject *observedObject, NSDictionary *properties))handleBlock;
 

@@ -22,7 +22,10 @@ static NSMutableDictionary *reservedDeallocImps;
     if (!addedObserver) {
         addedObserver = [KVOObserver object:self startListening:object forProperties:propertyKeys handleBlock:handleObservedProperties];
     } else {
-        [addedObserver addListeningProperties:propertyKeys];
+        [addedObserver addListeningProperties:propertyKeys];//Subcribe more properties
+        if (handleObservedProperties) { //Update handle block
+            addedObserver.handlePropertiesBlock = handleObservedProperties;
+        }
     }
     managedObservers[hashID] = addedObserver;
     //Set all observers to associcated with subcriber

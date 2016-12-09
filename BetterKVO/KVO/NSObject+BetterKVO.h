@@ -39,6 +39,12 @@
  */
 - (NSArray *)observers;
 
+
+/**
+ The delegate funtion which define in KVOObserverDelegate protocol
+
+ @param kvoObserver KVOObserver object
+ */
 - (void)stopListening:(KVOObserver *)kvoObserver;
 
 @end

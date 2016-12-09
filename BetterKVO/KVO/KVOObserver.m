@@ -7,11 +7,10 @@
 //
 
 #import "KVOObserver.h"
-
+#import <objc/runtime.h>
 
 @interface KVOObserver()
 
-@property (strong, nonatomic) ObservedPropertiesBlock handlePropertiesBlock;
 
 @end
 
@@ -35,13 +34,15 @@
     _observedObject = object;
     if (_observedObject) {
         for (NSString *keyPath in propertyNames) {
-            @try {
-                [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
-                [_observingKeyPaths addObject:keyPath];
-            } @catch (NSException *exception) {
-                NSLog(@"There was an exception when adding observer for key path %@ - e: %@", keyPath, exception);
-            } @finally {
-                NSLog(@"Adding property %@", keyPath);
+            if (class_getProperty(_observedObject.class, keyPath.UTF8String)) {
+                @try {
+                    [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+                    [_observingKeyPaths addObject:keyPath];
+                } @catch (NSException *exception) {
+                    NSLog(@"There was an exception when adding observer for key path %@ - e: %@", keyPath, exception);
+                } @finally {
+                    NSLog(@"Adding property %@", keyPath);
+                }
             }
         }
         _observedId = [NSString stringWithFormat:@"%ld", object.hash];
@@ -51,7 +52,7 @@
 
 - (void)addListeningProperties:(NSArray *)propertyNames {
     for (NSString *keyPath in propertyNames) {
-        if ([_observingKeyPaths indexOfObject:keyPath] == NSNotFound) {
+        if ([_observingKeyPaths indexOfObject:keyPath] == NSNotFound && class_getProperty(_observedObject.class, keyPath.UTF8String)) {
             @try {
                 [_observedObject addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
                 [_observingKeyPaths addObject:keyPath];

@@ -68,11 +68,11 @@
         
         BOOL check = YES;
         if (!class_getProperty([_leftHandObject class], leftProp.UTF8String)) {
-            // it has that property!
+            // it doesn't has that property!
             check = NO;
         }
         if (!class_getProperty([_rightHandObject class], rightProp.UTF8String)) {
-            // it has that property!
+            // it doesn't has that property!
             check = NO;
         }
         if (check) {
