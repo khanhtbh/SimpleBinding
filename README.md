@@ -17,7 +17,7 @@ An example of Data Binding implementation for iOS.
 
 ### Usage
 
-1. Subcribe the changes of an object's properties.
+* Subcribe the changes of an object's properties.
 
 ```objective-c
 #import "NSObject+BetterKVO.h"
@@ -37,7 +37,7 @@ An example of Data Binding implementation for iOS.
 }
 ```
 
-2. Binding.
+* Binding.
 
 ```objective-c
 #import "BIND.h"
