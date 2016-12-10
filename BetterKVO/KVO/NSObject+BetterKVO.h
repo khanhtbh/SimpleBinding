@@ -20,7 +20,7 @@
  @param handleObservedProperties Block that handles the changes of Object's properties
  @return KVOObserver object - the observer
  */
-- (KVOObserver *)subcribeObject:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
+- (KVOObserver *)subcribe:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties;
 
 
 /**

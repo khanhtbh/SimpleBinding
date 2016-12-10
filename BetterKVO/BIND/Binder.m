@@ -80,14 +80,14 @@
             switch (_bindDirection) {
                 case BindDirectionTwoWay: {
                     
-                    [self subcribeObject:leftObj
+                    [self subcribe:leftObj
                               forChanges:@[leftProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
                         [self handleTheChangesFrom:observedObject];
                     }];
                     
-                    [self subcribeObject:rightObj
+                    [self subcribe:rightObj
                               forChanges:@[rightProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
@@ -97,7 +97,7 @@
                     break;
                 case BindDirectionToLeft: {
                     //Subcribe the change of Right Object to get new value and set it to left object
-                    [self subcribeObject:rightObj
+                    [self subcribe:rightObj
                               forChanges:@[rightProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);
@@ -108,7 +108,7 @@
                     
                 case BindDirectionToRight: {
                     //Subcribe the change of Left Object to get new value and set it to Right Object
-                    [self subcribeObject:leftObj
+                    [self subcribe:leftObj
                               forChanges:@[leftProp]
                           handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
                         strongify(self);

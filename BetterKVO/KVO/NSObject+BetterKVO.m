@@ -14,7 +14,7 @@ static NSMutableDictionary *reservedDeallocImps;
 
 @implementation NSObject (BetterKVO)
 
-- (KVOObserver *)subcribeObject:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
+- (KVOObserver *)subcribe:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
     NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
     NSString *hashID = [NSString stringWithFormat:@"%ld", object.hash];
     KVOObserver *addedObserver = managedObservers[hashID];

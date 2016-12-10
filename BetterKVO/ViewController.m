@@ -60,7 +60,7 @@
     
     
     
-    [self subcribeObject:_model
+    [self subcribe:_model
               forChanges:@[@"stringProperty"]
                handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
         NSString *newValue = observedProperties[@"stringProperty"];
