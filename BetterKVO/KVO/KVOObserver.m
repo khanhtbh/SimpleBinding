@@ -11,7 +11,6 @@
 
 @interface KVOObserver()
 
-
 @end
 
 @implementation KVOObserver
@@ -46,7 +45,7 @@
             }
         }
         _observedId = [NSString stringWithFormat:@"%ld", object.hash];
-        [self addObserver:self forKeyPath:@"observedObject" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+        [self addObserver:self forKeyPath:OBSERVED_OBJECT_KEY options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
     }
 }
 
@@ -67,7 +66,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     if ([object isEqual:self]) {
-        if ([keyPath isEqualToString:@"observedObject"]) {
+        if ([keyPath isEqualToString:OBSERVED_OBJECT_KEY]) {
             if (!_observedObject) {
                 //observer deallocated, remove listener
                 if ([_observer respondsToSelector:@selector(stopListening:)]) {
@@ -99,12 +98,9 @@
                 NSLog(@"Remove property %@", keyPath);
             }
         }
-        [self removeObserver:self forKeyPath:@"observedObject"];
+        [self removeObserver:self forKeyPath:OBSERVED_OBJECT_KEY];
     }
 }
-
-
-
 
 + (KVOObserver *)object:(NSObject *)object startListening:(NSObject *)observedObject forProperties:(NSArray *)propertyNames handleBlock:(void (^)(NSObject *, NSDictionary *))handleBlock {
     KVOObserver *kvoObject = [[KVOObserver alloc] init];

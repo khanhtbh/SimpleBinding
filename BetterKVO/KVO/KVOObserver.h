@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define OBSERVED_OBJECT_KEY @"observedObject"
+
 typedef void (^ObservedPropertiesBlock) (NSObject *observedObject, NSDictionary *properties);
 
 @protocol KVOObserverDelegate;

@@ -14,8 +14,11 @@ static NSMutableDictionary *reservedDeallocImps;
 
 @implementation NSObject (BetterKVO)
 
+#pragma mark - Observer Implementation
 - (KVOObserver *)subcribe:(NSObject *)object forChanges:(NSArray *)propertyKeys handleChanges:(void(^)(NSObject *observedObject, NSDictionary *observedProperties))handleObservedProperties {
-    NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
+    
+    //Get the KVOObserver which is observing changes of passed object
+    NSMutableDictionary *managedObservers = [[self managedKvoObservers] mutableCopy];
     NSString *hashID = [NSString stringWithFormat:@"%ld", object.hash];
     KVOObserver *addedObserver = managedObservers[hashID];
     
@@ -27,14 +30,17 @@ static NSMutableDictionary *reservedDeallocImps;
             addedObserver.handlePropertiesBlock = handleObservedProperties;
         }
     }
-    managedObservers[hashID] = addedObserver;
-    //Set all observers to associcated with subcriber
-    objc_setAssociatedObject(self, @selector(managedObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
-    NSMutableArray *observers = [[object observers] mutableCopy];
-    if ([observers indexOfObject:addedObserver] == NSNotFound) {
-        [observers addObject:addedObserver];
-        objc_setAssociatedObject(object, @selector(observers), observers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    //Store KVOObserver
+    managedObservers[hashID] = addedObserver;
+    
+    //Set all observers to associcated with subcriber
+    objc_setAssociatedObject(self, @selector(managedKvoObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    NSMutableArray *subcribers = [[object subcribers] mutableCopy];
+    if ([subcribers indexOfObject:addedObserver] == NSNotFound) {
+        [subcribers addObject:addedObserver];
+        objc_setAssociatedObject(object, @selector(subcribers), subcribers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
     }
     
@@ -42,29 +48,46 @@ static NSMutableDictionary *reservedDeallocImps;
 }
 
 
-- (NSDictionary *)managedObservers {
-    NSDictionary *managedObservers =  objc_getAssociatedObject(self, @selector(managedObservers));
+/**
+ The Index Dictionary for added KVOObserver object
+
+ @return Dictionary of KVOObserver
+ */
+- (NSDictionary *)managedKvoObservers {
+    NSDictionary *managedObservers = objc_getAssociatedObject(self, @selector(managedKvoObservers));
     if (!managedObservers) {
         managedObservers = @{};
     }
     return managedObservers;
 }
 
-- (NSArray *)observers {
-    NSArray *observers =  objc_getAssociatedObject(self, @selector(observers));
-    if (!observers) {
-        observers = @[];
+
+/**
+ The Array of Subcriber which is subcribing self's changes
+
+ @return Subcriber array
+ */
+- (NSArray *)subcribers {
+    NSArray *subcribers =  objc_getAssociatedObject(self, @selector(subcribers));
+    if (!subcribers) {
+        subcribers = @[];
         [self swizzleDealloc];
     }
-    return observers;
+    return subcribers;
 }
 
+- (void)stopListening:(KVOObserver *)kvoObserver {
+    NSLog(@"Remove kvo object: %@", kvoObserver.observedId);
+    NSMutableDictionary *managedObservers = [[self managedKvoObservers] mutableCopy];
+    [managedObservers removeObjectForKey:kvoObserver.observedId];
+    objc_setAssociatedObject(self, @selector(managedKvoObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+#pragma mark - Swizzle method
+
 - (void)swizzleDealloc {
-    if (!reservedDeallocImps) {
-        reservedDeallocImps = [@{} mutableCopy];
-    }
-    if (reservedDeallocImps[NSStringFromClass(self.class)]) return;
-    Method newMethod = class_getInstanceMethod([NSObject class], @selector(newDealloc));
+    if ([NSObject alreadySwizzleForClass:self.class]) return;
+    Method newMethod = class_getInstanceMethod(self.class, @selector(newDealloc));
     IMP newMethodImp = method_getImplementation(newMethod);
     const char* returnTypes = method_getTypeEncoding(newMethod);
     
@@ -72,15 +95,14 @@ static NSMutableDictionary *reservedDeallocImps;
     Method originMethod = class_getInstanceMethod(self.class, NSSelectorFromString(@"dealloc"));
     if (originMethod) {
         IMP originalDeallocImp = method_setImplementation(originMethod, newMethodImp);
-        reservedDeallocImps[NSStringFromClass(self.class)] = [NSValue valueWithPointer:originalDeallocImp];
+        [NSObject reserveDeallocImp:originalDeallocImp forClass:self.class];
     } else {
         class_addMethod(self.class, NSSelectorFromString(@"dealloc"), newMethodImp, returnTypes);
-
     }
 }
 
 - (void)newDealloc {
-    for (KVOObserver *observer in self.observers) {
+    for (KVOObserver *observer in self.subcribers) {
         
         for (NSString *observingKey in observer.observingKeyPaths) {
             [self removeObserver:observer forKeyPath:observingKey];
@@ -88,19 +110,42 @@ static NSMutableDictionary *reservedDeallocImps;
         
         observer.observedObject = nil;
         
-        [observer removeObserver:observer forKeyPath:@"observedObject"];
+        [observer removeObserver:observer forKeyPath:OBSERVED_OBJECT_KEY];
     }
-    if (reservedDeallocImps[NSStringFromClass(self.class)]) {
-        IMP originalDeallocImp = [reservedDeallocImps[NSStringFromClass(self.class)] pointerValue];
+    if ([NSObject alreadySwizzleForClass:self.class]) {
+        IMP originalDeallocImp = [NSObject originalDeallocImpOfClass:self.class];
         ((void(*)(id,SEL))originalDeallocImp)(self, _cmd);
     }
 }
 
-- (void)stopListening:(KVOObserver *)kvoObserver {
-    NSLog(@"Remove kvo object: %@", kvoObserver.observedId);
-    NSMutableDictionary *managedObservers = [[self managedObservers] mutableCopy];
-    [managedObservers removeObjectForKey:kvoObserver.observedId];
-    objc_setAssociatedObject(self, @selector(managedObservers), managedObservers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+#pragma mark - Dealloc IMP manage
+
++ (NSMutableDictionary *)reservedDeallocImps {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        reservedDeallocImps = [@{} mutableCopy];
+    });
+    return reservedDeallocImps;
+}
+
++ (BOOL)alreadySwizzleForClass:(Class)class {
+    NSDictionary *_reservedDeallocImps = [NSObject reservedDeallocImps];
+    return _reservedDeallocImps[NSStringFromClass(class)];
+}
+
++ (IMP)originalDeallocImpOfClass:(Class)class {
+    if ([NSObject alreadySwizzleForClass:class]) {
+        NSDictionary *_reservedDeallocImps = [NSObject reservedDeallocImps];
+        NSValue *impValue = _reservedDeallocImps[NSStringFromClass(class)];
+        return [impValue pointerValue];
+    }
+    return nil;
+}
+
++ (void)reserveDeallocImp:(IMP)imp forClass:(Class)class {
+    NSMutableDictionary *_reservedDeallocImps = [NSObject reservedDeallocImps];
+    _reservedDeallocImps[NSStringFromClass(class)] = [NSValue valueWithPointer:imp];
+
 }
 
 

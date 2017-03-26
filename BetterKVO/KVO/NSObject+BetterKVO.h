@@ -24,19 +24,11 @@
 
 
 /**
- Return the dictionary of KVOObserver objects. Get them by the hash string of observed object
- 
- @return Dictionary of KVOObserver objects
- */
-- (NSDictionary *)managedObservers;
-
-
-/**
  Return the array of KVOObserver object which are observing the changes of this object's property
 
  @return Array of KVOObserver objects
  */
-- (NSArray *)observers;
+- (NSArray *)subcribers;
 
 
 /**
