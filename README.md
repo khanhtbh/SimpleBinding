@@ -28,9 +28,9 @@ An example of Data Binding implementation for iOS.
     
     //Init Models code...
     
-    [self subcribeObject:_model
-              forChanges:@[@"stringProperty"]
-               handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
+    [self subcribe:_model
+        forChanges:@[@"stringProperty"]
+     handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
         NSString *newValue = observedProperties[@"stringProperty"];
         weakSelf.testLabel.text = newValue;
     }];
