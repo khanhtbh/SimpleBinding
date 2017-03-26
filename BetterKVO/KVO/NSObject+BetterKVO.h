@@ -24,14 +24,6 @@
 
 
 /**
- Return the array of KVOObserver object which are observing the changes of this object's property
-
- @return Array of KVOObserver objects
- */
-- (NSArray *)subcribers;
-
-
-/**
  The delegate funtion which define in KVOObserverDelegate protocol
 
  @param kvoObserver KVOObserver object

@@ -37,6 +37,8 @@
         return YES;
     })
     .filterRight(^BOOL(id property) {//Validate right object property
+        
+        //Test - Only set value when model 2's number is not an odd number
         NSNumber *number = property;
         BOOL result = (number.integerValue % 2 == 0);
         NSLog(@"number.integerValue %% 2 = %ld, %d", number.integerValue % 2, result);
@@ -63,8 +65,10 @@
     [self subcribe:_model
               forChanges:@[@"stringProperty"]
                handleChanges:^(NSObject *observedObject, NSDictionary *observedProperties) {
-        NSString *newValue = observedProperties[@"stringProperty"];
-        weakSelf.testLabel.text = newValue;
+                   dispatch_async(dispatch_get_main_queue(), ^{
+                       NSString *newValue = observedProperties[@"stringProperty"];
+                       weakSelf.testLabel.text = newValue;
+                   });
     }];
 }
 
