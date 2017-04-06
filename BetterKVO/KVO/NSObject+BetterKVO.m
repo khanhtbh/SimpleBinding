@@ -143,9 +143,10 @@ static NSMutableDictionary *reservedDeallocImps;
 }
 
 + (void)reserveDeallocImp:(IMP)imp forClass:(Class)class {
-    NSMutableDictionary *_reservedDeallocImps = [NSObject reservedDeallocImps];
-    _reservedDeallocImps[NSStringFromClass(class)] = [NSValue valueWithPointer:imp];
-
+    @synchronized (reservedDeallocImps) {
+        NSMutableDictionary *_reservedDeallocImps = [NSObject reservedDeallocImps];
+        _reservedDeallocImps[NSStringFromClass(class)] = [NSValue valueWithPointer:imp];
+    }
 }
 
 
